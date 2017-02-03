@@ -95,9 +95,9 @@ def train(X_train, Y_train, X_validation, Y_validation):
 
         if i%10 == 0 and i!=0:
             print "step", i, "loss", loss_val
-            
+
 	_, loss_val = sess.run([train_step, cross_entropy], feed_dict={x:batch_X, y_: batch_Y, keep_prob: 0.5, lr: 2e-4})
 
 def predict_probabilites(X):
     prediction = sess.run([y_conv], feed_dict={x: X, keep_prob: 1.0})
-    return prediction
+    return prediction[0]

@@ -71,11 +71,28 @@ def classify_embedding():
 
     Y_8_validation = enc.fit_transform(np.array(Y_8_validation).reshape(-1,1))
 
-    # print X_8_validation.shape
-    # print Y_8_validation.shape
-    # print X_8_train.shape
-    # print Y_8_train.shape
+    Y_2_validation = np.array(Y_validation)
+    X_2_validation = np.array(X_validation)
 
-    # classification_based.train(X_8_train, Y_8_train, X_8_validation, Y_8_validation)
+    indices = np.where(Y_2_validation>=8)
+    Y_2_validation = Y_2_validation[indices]
+    X_2_validation = X_2_validation[indices]
+
+    validaiton_probab = classification_based.predict_probabilites(X_2_validation)
+    weights = []
+    for i in class_labels[:-2]:
+        weights.append(embeddings[i])
+    weights = np.array(weights, dtype=np.float32)
+
+    validaiton_embeddings = np.dot(validaiton_probab, weights)
+
+    targets_embeddings = []
+    for i in class_labels:
+        targets_embeddings.append(embeddings[i])
+    targets_embeddings = np.array(targets_embeddings, dtype=np.float32)
+
+    
+
+
 
 classify_embedding()
