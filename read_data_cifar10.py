@@ -122,10 +122,10 @@ def regression_embedding():
     Y_8_train = np.array(Y_train)
     X_8_train = np.array(X_train)
 
-    removed_indices = np.where(Y_8_train!=8)
+    removed_indices = np.where(Y_8_train!=2)
     Y_8_train = Y_8_train[removed_indices]
     X_8_train = X_8_train[removed_indices]
-    removed_indices = np.where(Y_8_train!=9)
+    removed_indices = np.where(Y_8_train!=6)
     Y_8_train = Y_8_train[removed_indices]
     X_8_train = X_8_train[removed_indices]
 
@@ -140,7 +140,7 @@ def regression_embedding():
     Y_2_validation = np.array(Y_validation)
     X_2_validation = np.array(X_validation)
 
-    indices = np.where(Y_2_validation>=8)
+    indices = np.where(np.logical_or(Y_2_validation==2 ,Y_2_validation==6))
     Y_2_validation = Y_2_validation[indices]
     X_2_validation = X_2_validation[indices]
 
