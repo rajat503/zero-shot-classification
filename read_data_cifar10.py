@@ -122,10 +122,10 @@ def regression_embedding():
     Y_8_train = np.array(Y_train)
     X_8_train = np.array(X_train)
 
-    removed_indices = np.where(Y_8_train!=2)
+    removed_indices = np.where(Y_8_train!=1)
     Y_8_train = Y_8_train[removed_indices]
     X_8_train = X_8_train[removed_indices]
-    removed_indices = np.where(Y_8_train!=6)
+    removed_indices = np.where(Y_8_train!=4)
     Y_8_train = Y_8_train[removed_indices]
     X_8_train = X_8_train[removed_indices]
 
@@ -135,19 +135,20 @@ def regression_embedding():
     X_8_validation = np.array(X_validation)
 
 
-    # regression_based.train(X_8_train, Y_8_train)
+    regression_based.train(X_8_train, Y_8_train)
 
     Y_2_validation = np.array(Y_validation)
     X_2_validation = np.array(X_validation)
 
-    indices = np.where(np.logical_or(Y_2_validation==2 ,Y_2_validation==6))
+    indices = np.where(np.logical_or(Y_2_validation==1 ,Y_2_validation==4))
     Y_2_validation = Y_2_validation[indices]
     X_2_validation = X_2_validation[indices]
 
     validaiton_embeddings = regression_based.predict(X_2_validation)
 
     targets_embeddings = []
-    for i in class_labels:
+    # for i in class_labels:
+    for i in ['automobile', 'deer']:
         targets_embeddings.append(embeddings[i])
     targets_embeddings = np.array(targets_embeddings, dtype=np.float32)
 
@@ -163,25 +164,25 @@ def regression_embedding():
     #     Y_pred_validation.append(np.argmax(cos))
     #
     neigh = KNeighborsClassifier(n_neighbors=1)
-    neigh.fit(targets_embeddings, [0,1,2,3,4,5,6,7,8,9])
+    neigh.fit(targets_embeddings, [1,4])
     Y_pred_validation = neigh.predict(validaiton_embeddings)
     # print Y_2_validation
     # print Y_pred_validation
     print accuracy_score(Y_2_validation, Y_pred_validation)
 
 
-    data = np.vstack((validaiton_embeddings, targets_embeddings))
-    from sklearn import manifold
-    tsne = manifold.TSNE(n_components=2)
-    X_tsne = tsne.fit_transform(data)
-
-    print X_tsne.shape
-    import matplotlib.pyplot as plt
-    Y_2_validation = Y_pred_validation.tolist()  + [0,1,2,3,4,5,6,7,8,9]
-    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=Y_2_validation, cmap=plt.cm.get_cmap("jet", 10))
-    plt.colorbar(ticks=range(10))
-    plt.clim(-0.5, 9.5)
-    plt.show()
+    # data = np.vstack((validaiton_embeddings, targets_embeddings))
+    # from sklearn import manifold
+    # tsne = manifold.TSNE(n_components=2)
+    # X_tsne = tsne.fit_transform(data)
+    #
+    # print X_tsne.shape
+    # import matplotlib.pyplot as plt
+    # Y_2_validation = Y_pred_validation.tolist()  + [0,1,2,3,4,5,6,7,8,9]
+    # plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=Y_2_validation, cmap=plt.cm.get_cmap("jet", 10))
+    # plt.colorbar(ticks=range(10))
+    # plt.clim(-0.5, 9.5)
+    # plt.show()
 
 regression_embedding()
 # classify_embedding()
