@@ -135,7 +135,7 @@ def regression_embedding():
     X_8_validation = np.array(X_validation)
 
 
-    regression_based.train(X_8_train, Y_8_train)
+    # regression_based.train(X_8_train, Y_8_train)
 
     Y_2_validation = np.array(Y_validation)
     X_2_validation = np.array(X_validation)
@@ -153,7 +153,7 @@ def regression_embedding():
 
     from sklearn.neighbors import KNeighborsClassifier
     from sklearn.metrics import accuracy_score
-    # from scipy.spatial.distance import cosine
+    from scipy.spatial.distance import cosine
     # Y_pred_validation = []
     # for i in validaiton_embeddings:
     #     cos = []
@@ -161,13 +161,27 @@ def regression_embedding():
     #         val = cosine(i,j)
     #         cos.append(val)
     #     Y_pred_validation.append(np.argmax(cos))
-
+    #
     neigh = KNeighborsClassifier(n_neighbors=1)
     neigh.fit(targets_embeddings, [0,1,2,3,4,5,6,7,8,9])
     Y_pred_validation = neigh.predict(validaiton_embeddings)
     # print Y_2_validation
     # print Y_pred_validation
     print accuracy_score(Y_2_validation, Y_pred_validation)
+
+
+    data = np.vstack((validaiton_embeddings, targets_embeddings))
+    from sklearn import manifold
+    tsne = manifold.TSNE(n_components=2)
+    X_tsne = tsne.fit_transform(data)
+
+    print X_tsne.shape
+    import matplotlib.pyplot as plt
+    Y_2_validation = Y_pred_validation.tolist()  + [0,1,2,3,4,5,6,7,8,9]
+    plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=Y_2_validation, cmap=plt.cm.get_cmap("jet", 10))
+    plt.colorbar(ticks=range(10))
+    plt.clim(-0.5, 9.5)
+    plt.show()
 
 regression_embedding()
 # classify_embedding()
